@@ -1,35 +1,37 @@
-#include<bits/stdc++.h>
+#include<unordered_map>
+#include<algorithm>
+#include<vector>
 
 using namespace std;
+
 class Solution {
 public:
+    // 排序
     int majorityElement(vector<int>& nums) {
-        unordered_map<int, int> hashTable;
-        int len = nums.size();
-        for(auto num:nums){
-            if(hashTable.find(num)!=hashTable.end()){
-                hashTable[num]++;
-            }else{
-                hashTable[num]=1;
-            }
-            if(hashTable[num]>len/2)return num;
-        }
-        return 0;
+        sort(nums.begin(), nums.end());
+        int n=nums.size();
+        return nums[n/2];
     }
 
     int majorityElement1(vector<int>& nums){
-        int candidate = 0,count=0;
-        for(int i=0;i<nums.size();i++){
-            if(count==0){
-                candidate = nums[i];
-                count=1;
-            }else if(nums[i]==candidate){
-                count++;
+        unordered_map<int, int> map;
+        int n = nums.size();
+        for(int i=0;i<n;i++){
+            if(map.count(nums[i])>0){
+                map[nums[i]]++;
             }else{
-                count--;
+                map[nums[i]]=1;
+            }
+            if(map[nums[i]]>n/2){
+                return nums[i];
             }
         }
-        return candidate;
+        return 0;
     }
 };
 // 还有很多种方法，比如排序，比如摩尔投票法，比如分治法，比如哈希表，比如随机化等等
+
+int main() {
+    vector<int> nums = {1,1,1,1,1,3,3};
+    
+}

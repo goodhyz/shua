@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <sstream>
 #include <vector>
 #include <algorithm>
 using namespace std;
@@ -23,28 +25,31 @@ class Solution {
         }
     }
     // 2. 使用翻转
+    // 尾部 k%n 个元素会到头部，所以第二次翻转k%n个，及[0,k%n)
     void rotate2(vector<int> &nums, int k) {
         int len = nums.size();
         k = k % len;
+        
         reverse(nums.begin(), nums.end());
         reverse(nums.begin(), nums.begin() + k);
         reverse(nums.begin() + k, nums.end());
     }
 
     // 3. 使用环状替换
-    void rotate3(vector<int> &nums, int k) {
-        int len = nums.size();
-        k = k % len;
-        int count = 0;
-        for (int start = 0; count < len; start++) {
-            int current = start;
-            int prev = nums[start];
-            do {
-                int next = (current + k) % len;
-                swap(prev,nums[next]); // 复制给下一个位置，并保留下一个位置的值
-                current = next;
+    void rotate(vector<int>& nums, int k) {
+        int n = nums.size();
+        k = k% n;
+        if(k==0)return;
+        int count=0;
+        for(int i=0;count<n;i++){
+            int cur = i;
+            int pre = nums[i];
+            do { 
+                int next = (cur+k)%n;
+                swap(pre,nums[next]);
+                cur = next;
                 count++;
-            } while (start != current);
+            } while(i != cur);
         }
     }
 
@@ -52,8 +57,15 @@ class Solution {
 
 int main() {
     Solution solution;
-    vector<int> nums = {1, 2, 3, 4, 5, 6, 7};
-    solution.rotate3(nums, 3);
+    string line;
+    getline(cin,line);
+    stringstream ss(line);
+    int n;
+    vector<int> nums;
+    while(ss>>n){
+        nums.push_back(n);
+    }
+    solution.rotate(nums, 3);
     // for(auto num:nums){
     //     cout<<num<<endl;
     // }

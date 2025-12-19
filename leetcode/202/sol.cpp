@@ -1,51 +1,37 @@
-#include<vector>
-#include<set>
+#include <cmath>
+#include <unordered_set>
+// #include <vector>
+#include <iostream>
 using namespace std;
 
 class Solution {
-    public:
-        /*
-        哈希集合方法
-        */
-        bool isHappy(int n) {
-            set<int> hash_set; //用unordered_set可以吗
-            while(true){
-                n = getSum(n);
-                auto it = hash_set.find(n);
-                if (it!=hash_set.end()){
-                    return false;
-                }
-                if(n==1)return true;
-                hash_set.insert({n});
-            }
+public:
+  int getSum(int n) {
+    int sum = 0;
+    while(n){
+        sum+=pow(n%10, 2);
+        n = n/10;
+    }
+    return sum;
+  }
+  bool isHappy(int n) {
+    unordered_set<int> set;
+    while(1){
+        int sum = getSum(n);
+        if(set.count(sum)>0){
+            return false;
+        }else if(sum == 1){
             return true;
         }
-        int getSum(int n){
-            int sum = 0;
-            while (n > 0) {
-                sum+=(n%10)*(n%10);  // 取出最后一位数字
-                n = n / 10;  // 去掉最后一位数字
-            }
-            return sum;
-        }
-
-        /*
-        快慢指针方法，其实是一个环形链表
-        */
-       bool isHappy1(int n) {
-        int slow=n,fast=n;
-        while(true){
-            slow = getSum(n);
-            fast = getSum(n);
-            fast = getSum(n);
-            if(slow == 1 or fast == 1)return true;
-            if(slow == fast)return false;
-        }
-        return true;
+        set.insert(sum);
+        n = sum;
     }
-    };
+  }
+};
 
-    int main(){
-        Solution s;
-        s.isHappy(19);
-    }
+int main() {
+  Solution s;
+  int n = 19;
+  // cin >> n;
+  cout << s.isHappy(n) << endl;
+}
