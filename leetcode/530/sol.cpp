@@ -1,15 +1,3 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-
 #include <iostream>
 #include <queue>
 #include <unordered_map>
@@ -26,19 +14,20 @@ struct TreeNode {
 
 class Solution {
   public:
+    int pre = -100000;
+    int min_diff = 100000;
     int getMinimumDifference(TreeNode *root) {
-        int pre = -100001;
-        int minVal = INT_MAX;
-        dfs(root,pre,minVal);
-        return minVal;
+        dfs(root);
+        return min_diff;
     }
 
     // 二叉搜索树的中序遍历是有序的
-    void dfs(TreeNode *root,int &pre, int &minVal){\
-        if(root==nullptr)return ;
-        dfs(root->left,pre,minVal);
-        minVal = min(minVal,root->val-pre);
-        pre=root->val;
-        dfs(root->right,pre,minVal);
+    void dfs(TreeNode *root){
+        if(!root)return;
+        dfs(root->left);
+        int diff = root->val - pre;
+        pre = root->val;
+        this->min_diff = min(min_diff,diff);
+        dfs(root->right);
     }
 };

@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <vector>
+
 
 using namespace std;
 
@@ -7,16 +9,16 @@ class Solution {
     int lengthOfLIS(vector<int> &nums) {
         int n=nums.size();
         vector<int> dp(n,1);
-        int max_len=1;
+        int maxLen=1;
         for(int i=1;i<n;i++){
-            for(int j=0;j<i;j++){
+            for(int j=i-1;j>=0;j--){
                 if(nums[i]>nums[j]){
-                    dp[i]=max(dp[i],dp[j]+1);
+                    dp[i] = max(dp[j]+1,dp[i]);
+                    maxLen = max(maxLen,dp[i]);
                 }
             }
-            max_len = max(dp[i],max_len);
         }
-        return max_len;
+        return maxLen;
     }
 };
 

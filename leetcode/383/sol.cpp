@@ -1,25 +1,25 @@
 
-#include <algorithm>
-#include <iostream>
 #include <string>
 #include <vector>
-#include<unordered_map>
 using namespace std;
 
 class Solution {
-    public:
-        bool canConstruct(string ransomNote, string magazine) {
-            if(ransomNote.length()>magazine.length())return false;
-            int myMap[26]={0};
-            for(auto &s:ransomNote){
-                myMap[s-'a']++;
-            }
-            for(auto &s:magazine){
-                myMap[s-'a']--;
-            }
-            for(auto &elem:myMap){
-                if(elem>0)return false;
-            }
-            return true;
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        int n1 =ransomNote.size(),n2=magazine.size();
+        if(n1>n2){
+            return false;
         }
-    };
+        vector<int> map(26,0);
+        for(int i=0;i<n2;i++){
+            map[magazine[i]-'a']++;
+        }
+        for(int i=0;i<n1;i++){
+            int curVal = --map[ransomNote[i]-'a'];
+            if(curVal<0){
+                return false;
+            }
+        }
+        return true;
+    }
+};

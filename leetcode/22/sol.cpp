@@ -1,46 +1,45 @@
+#include <iostream>
 #include <string>
 #include <vector>
-#include<iostream>
 using namespace std;
 
 class Solution {
-  private:
-    vector<string> res;
-    string path;
-    vector<char> list;
+public:
+  vector<string> res;
+  string tmp;
+  vector<char> c_list;
+  vector<string> generateParenthesis(int n) {
+    c_list = {'(', ')'};
+    backTrace(n, 0, 0);
+    return res;
+  }
 
-  public:
-    vector<string> generateParenthesis(int n) {
-        // left = right =0;
-        list.push_back('(');
-        list.push_back(')');
-        backtrace(n, 0,0);
-        return res;
+  void backTrace(int n, int left, int right) {
+    if (left < right) {
+      return;
     }
-    void backtrace(int n, int left, int right) {
-        if(left<right)return;
-        if (path.size() == 2 * n ) {
-            if(left==right){
-            res.push_back(path);}
-            return;
-        }
-        for (auto c : list) {
-            path.push_back(c);
-            if (c == '(') {
-                backtrace(n, left + 1, right);
-            } else {
-                backtrace(n, left, right+1);
-            }
-            path.pop_back();
-        }
+    if (2*n == left + right) {
+      if (left == right) {
+        res.push_back(tmp);
+      }
+      return;
     }
+    for (const char brace : c_list) {
+      tmp.push_back(brace);
+      if (brace == '(') {
+        backTrace(n, left + 1, right);
+      } else {
+        backTrace(n, left, right + 1);
+      }
+      tmp.pop_back();
+    }
+  }
 };
 
-int main(){
-    Solution s;
-    vector<string> res = s.generateParenthesis(3);
-    for(const auto & str:res){
-        cout<<str<<endl;
-    }
-
+int main() {
+  Solution s;
+  vector<string> res = s.generateParenthesis(1);
+  for (const auto &str : res) {
+    cout << str << endl;
+  }
 }
