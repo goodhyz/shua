@@ -1,0 +1,1 @@
+ns.push_back(total%2+'0');
